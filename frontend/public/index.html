@@ -1,0 +1,710 @@
+<!DOCTYPE html>
+<html lang="th">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Pony: Card Collection & Battle Arena</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            margin: 0;
+            background: linear-gradient(135deg, #f5f3ff 0%, #e0e7ff 100%);
+            color: #333;
+            min-height: 100vh;
+        }
+
+        header {
+            text-align: center;
+            padding: 25px 20px;
+            background: linear-gradient(90deg, #7c3aed 0%, #6366f1 100%);
+            color: white;
+            box-shadow: 0 4px 15px rgba(124, 58, 237, 0.3);
+        }
+
+        header h1 {
+            margin: 0 0 8px;
+            font-size: 2rem;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 25px auto;
+            padding: 0 20px;
+        }
+
+        /* ==================== TEAM SELECTION & PODIUM ==================== */
+        .favorite-box {
+            background: white;
+            padding: 25px;
+            border-radius: 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+        }
+
+        .favorite-box h2 {
+            margin-top: 0;
+            text-align: center;
+            color: #4c1d95;
+        }
+
+        .top3 {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .slot {
+            min-height: 200px;
+            border: 2px dashed #cbd5e1;
+            border-radius: 16px;
+            padding: 15px;
+            text-align: center;
+            background: #fafafa;
+            transition: all 0.3s;
+        }
+
+        .slot.filled {
+            border-style: solid;
+            border-color: #8b5cf6;
+            background: #f3e8ff;
+        }
+
+        .slot img {
+            width: 90px;
+            height: 90px;
+            object-fit: contain;
+            display: block;
+            margin: 0 auto 8px;
+        }
+
+        .slot strong {
+            display: block;
+            color: #5b21b6;
+        }
+
+        .slot-stats {
+            font-size: 12px;
+            color: #6b21a8;
+            margin-top: 5px;
+        }
+
+        /* ==================== BUTTONS ==================== */
+        button {
+            border: none;
+            border-radius: 10px;
+            padding: 12px 20px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.2s;
+        }
+
+        .confirm-btn {
+            width: 100%;
+            background: linear-gradient(90deg, #10b981 0%, #059669 100%);
+            color: white;
+            font-size: 16px;
+            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+        }
+
+        .clear-team-btn {
+            width: 100%;
+            margin-top: 10px;
+            background: #fee2e2;
+            color: #b91c1c;
+        }
+
+        .confirm-btn:disabled {
+            background: #9ca3af;
+            box-shadow: none;
+            cursor: not-allowed;
+        }
+
+        .delete-btn {
+            margin-top: 10px;
+            background: #ef4444;
+            color: white;
+            padding: 6px 12px;
+            font-size: 12px;
+        }
+
+        /* ==================== SEARCH & CARDS ==================== */
+        .controls {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        input, select {
+            padding: 12px;
+            border: 1px solid #cbd5e1;
+            border-radius: 10px;
+            font-size: 15px;
+        }
+
+        input { flex: 1; }
+
+        .controls select {
+            min-width: 150px;
+        }
+
+        .characters-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 20px;
+        }
+
+        .pagination {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 16px;
+            margin: 24px 0 36px;
+        }
+
+        .pagination button {
+            background: #6d28d9;
+            color: white;
+        }
+
+        .pagination button:disabled {
+            background: #cbd5e1;
+            color: #64748b;
+            cursor: not-allowed;
+        }
+
+        .pagination-status {
+            min-width: 105px;
+            color: #4c1d95;
+            font-weight: bold;
+            text-align: center;
+        }
+
+        .scroll-to-top-btn {
+            position: fixed;
+            right: 24px;
+            bottom: 24px;
+            z-index: 900;
+            width: 52px;
+            height: 52px;
+            padding: 0;
+            border-radius: 50%;
+            background: #6d28d9;
+            color: white;
+            font-size: 24px;
+            box-shadow: 0 4px 14px rgba(76, 29, 149, 0.35);
+        }
+
+        .scroll-to-top-btn:hover {
+            background: #5b21b6;
+        }
+
+        .card {
+            background: white;
+            border-radius: 16px;
+            padding: 15px;
+            text-align: center;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            transition: all 0.3s;
+            position: relative;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(124, 58, 237, 0.15);
+        }
+
+        .card.selected {
+            border: 2px solid #8b5cf6;
+            background: #f5f3ff;
+        }
+
+        .card.disabled {
+            opacity: 0.5;
+            filter: grayscale(80%);
+        }
+
+        .card img {
+            width: 100%;
+            height: 160px;
+            object-fit: contain;
+        }
+
+        .select-btn {
+            width: 100%;
+            margin-top: 10px;
+            background: #8b5cf6;
+            color: white;
+        }
+
+        .details-btn {
+            width: 100%;
+            margin-top: 10px;
+            background: #ede9fe;
+            color: #5b21b6;
+        }
+
+        .select-btn:disabled {
+            background: #cbd5e1;
+            color: #64748b;
+            cursor: not-allowed;
+        }
+
+        .character-modal {
+            z-index: 1100;
+        }
+
+        .character-modal-content {
+            background: white;
+            color: #1f2937;
+            width: 100%;
+            max-width: 650px;
+            max-height: 90vh;
+            overflow-y: auto;
+            border-radius: 20px;
+            padding: 28px;
+            position: relative;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+        }
+
+        .character-modal-content .close {
+            color: #64748b;
+            background: transparent;
+            padding: 0;
+        }
+
+        .character-detail-header {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            padding-right: 45px;
+            margin-bottom: 20px;
+        }
+
+        .character-detail-image {
+            width: 120px;
+            height: 120px;
+            flex: 0 0 120px;
+            object-fit: contain;
+            background: #f5f3ff;
+            border-radius: 16px;
+        }
+
+        .character-detail-header h2 {
+            color: #5b21b6;
+            margin: 0 0 8px;
+        }
+
+        .character-detail-stats {
+            color: #6d28d9;
+            font-weight: bold;
+        }
+
+        .character-detail-select-btn {
+            margin-left: auto;
+            flex: 0 0 auto;
+            background: #8b5cf6;
+            color: white;
+        }
+
+        .character-detail-select-btn:disabled {
+            background: #cbd5e1;
+            color: #64748b;
+            cursor: not-allowed;
+        }
+
+        .character-details {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 12px;
+            margin: 0;
+        }
+
+        .character-details div {
+            background: #f8fafc;
+            border-radius: 10px;
+            padding: 12px;
+            overflow-wrap: anywhere;
+        }
+
+        .character-details dt {
+            color: #64748b;
+            font-size: 13px;
+            margin-bottom: 4px;
+        }
+
+        .character-details dd {
+            margin: 0;
+            font-weight: 600;
+        }
+
+        .character-episodes {
+            margin-top: 18px;
+            color: #374151;
+        }
+
+        .character-episodes h3 {
+            color: #5b21b6;
+            margin-bottom: 8px;
+        }
+
+        .character-episodes ul {
+            padding-left: 22px;
+            margin-bottom: 0;
+        }
+
+        /* ==================== BATTLE ARENA MODAL ==================== */
+        .modal {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(15, 23, 42, 0.85);
+            backdrop-filter: blur(5px);
+            justify-content: center;
+            align-items: center;
+            padding: 15px;
+            z-index: 1000;
+        }
+
+        .modal-content {
+            background: #1e1b4b;
+            color: white;
+            width: 100%;
+            max-width: 950px;
+            max-height: 95vh;
+            overflow-y: auto;
+            border-radius: 24px;
+            padding: 25px;
+            position: relative;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+        }
+
+        .close {
+            position: absolute;
+            right: 20px;
+            top: 15px;
+            font-size: 28px;
+            cursor: pointer;
+            color: #94a3b8;
+        }
+
+        .battle-teams {
+            display: grid;
+            grid-template-columns: 1fr 100px 1fr;
+            gap: 15px;
+            margin-top: 20px;
+            align-items: center;
+        }
+
+        .team-column {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .fighter-card {
+            background: #312e81;
+            border-radius: 12px;
+            padding: 12px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            border: 2px solid transparent;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .fighter-card.active-attacker {
+            border-color: #38bdf8;
+            box-shadow: 0 0 15px rgba(56, 189, 248, 0.4);
+        }
+
+        .fighter-card.targetable:hover {
+            border-color: #f43f5e;
+            transform: scale(1.02);
+        }
+
+        .fighter-card.targetable.awaiting-target {
+            cursor: crosshair;
+            border-color: #f59e0b;
+        }
+
+        .fighter-card.dead {
+            opacity: 0.4;
+            filter: grayscale(100%);
+            pointer-events: none;
+        }
+
+        .fighter-card img {
+            width: 60px;
+            height: 60px;
+            object-fit: contain;
+        }
+
+        .bar-container {
+            flex: 1;
+        }
+
+        .hp-bar-bg, .energy-bar-bg {
+            background: #0f172a;
+            height: 10px;
+            border-radius: 5px;
+            overflow: hidden;
+            margin-top: 4px;
+        }
+
+        .hp-bar-fill {
+            background: #10b981;
+            height: 100%;
+            width: 100%;
+            transition: width 0.3s;
+        }
+
+        .energy-bar-fill {
+            background: #3b82f6;
+            height: 100%;
+            width: 0%;
+            transition: width 0.3s;
+        }
+
+        .action-panel {
+            background: #2e1065;
+            padding: 15px;
+            border-radius: 16px;
+            margin-top: 20px;
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .auto-btn {
+            background: #64748b;
+            color: white;
+        }
+
+        .auto-btn.active {
+            background: #06b6d4;
+            box-shadow: 0 0 12px rgba(6, 182, 212, 0.5);
+        }
+
+        .atk-btn { background: #f59e0b; color: white; }
+        .spec-btn { background: #ec4899; color: white; }
+        .defend-btn { background: #0ea5e9; color: white; }
+        .atk-btn:disabled, .spec-btn:disabled, .defend-btn:disabled {
+            background: #475569;
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .atk-btn.selected, .spec-btn.selected {
+            outline: 3px solid #fef08a;
+            outline-offset: 2px;
+        }
+
+        .action-prompt {
+            margin: 14px 0 0;
+            color: #ddd6fe;
+            text-align: center;
+        }
+
+        .battle-log {
+            background: #0f172a;
+            border-radius: 12px;
+            padding: 12px;
+            height: 100px;
+            overflow-y: auto;
+            margin-top: 15px;
+            font-size: 13px;
+            font-family: monospace;
+            color: #cbd5e1;
+        }
+
+        .result-modal {
+            z-index: 1200;
+        }
+
+        .result-modal-content {
+            width: 100%;
+            max-width: 440px;
+            padding: 35px 25px;
+            border-radius: 24px;
+            text-align: center;
+            background: white;
+            color: #1f2937;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.35);
+        }
+
+        .result-modal-content h2 {
+            margin: 0 0 12px;
+            font-size: 2rem;
+        }
+
+        .result-modal-content p {
+            margin: 0 0 22px;
+            color: #64748b;
+        }
+
+        .result-modal-content.victory h2 {
+            color: #059669;
+        }
+
+        .result-modal-content.defeat h2 {
+            color: #e11d48;
+        }
+
+        .result-close-btn {
+            background: #5b21b6;
+            color: white;
+        }
+
+        @media (max-width: 768px) {
+            .top3, .battle-teams { grid-template-columns: 1fr; }
+            .battle-vs { text-align: center; font-size: 24px; font-weight: bold; color: #f43f5e; }
+        }
+
+        @media (max-width: 480px) {
+            .scroll-to-top-btn { right: 16px; bottom: 16px; }
+            .character-modal-content { padding: 20px; }
+            .character-detail-header { align-items: flex-start; gap: 12px; flex-wrap: wrap; }
+            .character-detail-image { width: 85px; height: 85px; flex-basis: 85px; }
+            .character-detail-header h2 { font-size: 1.2rem; }
+            .character-detail-select-btn { margin-left: auto; }
+            .character-details { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <h1>🦄 My Pony: Card Collection & Battle Arena</h1>
+        <p>จัดทีม Top 3 และทดสอบการประลองระบบ Fixed Damage & Auto-Battle</p>
+    </header>
+
+    <div class="container">
+
+        <!-- ================= MY TOP 3 SELECTION ================= -->
+        <div class="favorite-box">
+            <h2>⭐ ทีม My Top 3 ของคุณ</h2>
+
+            <div id="top3" class="top3">
+                <div class="slot"><p>🥇 Rank 1</p><span>ยังไม่ได้เลือก</span></div>
+                <div class="slot"><p>🥈 Rank 2</p><span>ยังไม่ได้เลือก</span></div>
+                <div class="slot"><p>🥉 Rank 3</p><span>ยังไม่ได้เลือก</span></div>
+            </div>
+
+            <button id="confirmBtn" class="confirm-btn" onclick="startBattle()" disabled>
+                ⚔️ กรุณาเลือกตัวละครให้ครบ 3 ตัวเพื่อเริ่มต่อสู้
+            </button>
+            <button id="clearTeamBtn" class="clear-team-btn" type="button" hidden>
+                🗑️ ลบตัวละครทั้งหมดออกจากทีม
+            </button>
+        </div>
+
+        <!-- ================= CONTROLS & SEARCH ================= -->
+        <h2>🔎 คลังตัวละครทั้งหมด</h2>
+
+        <div class="controls">
+            <input type="text" id="searchInput" placeholder="ค้นหาชื่อตัวละคร...">
+            <select id="seasonSort">
+                <option value="all">ทุกซีซัน</option>
+                <option value="1">Season 1</option>
+                <option value="2">Season 2</option>
+                <option value="3">Season 3</option>
+                <option value="4">Season 4</option>
+                <option value="5">Season 5</option>
+                <option value="6">Season 6</option>
+                <option value="7">Season 7</option>
+                <option value="8">Season 8</option>
+                <option value="9">Season 9</option>
+            </select>
+            <select id="characterSort" aria-label="เรียงตัวละคร">
+                <option value="asc">เรียงชื่อ A–Z</option>
+                <option value="desc">เรียงชื่อ Z–A</option>
+                <option value="atk-desc">โจมตีมากสุด–น้อยสุด</option>
+                <option value="atk-asc">โจมตีน้อยสุด–มากสุด</option>
+                <option value="hp-desc">เลือดมากสุด–น้อยสุด</option>
+                <option value="hp-asc">เลือดน้อยสุด–มากสุด</option>
+            </select>
+        </div>
+
+        <!-- ================= CHARACTER GRID ================= -->
+        <div id="charactersGrid" class="characters-grid">
+            <div style="text-align: center; grid-column: 1/-1; padding: 40px;">กำลังโหลดข้อมูลตัวละคร...</div>
+        </div>
+        <nav class="pagination" aria-label="หน้ารายการตัวละคร">
+            <button id="previousPageBtn" type="button">ก่อนหน้า</button>
+            <span id="paginationStatus" class="pagination-status" aria-live="polite"></span>
+            <button id="nextPageBtn" type="button">ถัดไป</button>
+        </nav>
+
+    </div>
+
+    <button id="scrollToTopBtn" class="scroll-to-top-btn" type="button" aria-label="เลื่อนกลับไปด้านบน" title="กลับไปด้านบน" hidden>
+        ↑
+    </button>
+
+    <!-- ==================== CHARACTER DETAILS MODAL ==================== -->
+    <div id="characterModal" class="modal character-modal" aria-hidden="true">
+        <div class="character-modal-content" role="dialog" aria-modal="true" aria-labelledby="characterDetailName">
+            <button class="close" type="button" aria-label="ปิด" onclick="closeCharacterDetails()">&times;</button>
+            <div id="characterDetailContent"></div>
+        </div>
+    </div>
+
+    <!-- ==================== BATTLE RESULT MODAL ==================== -->
+    <div id="battleResultModal" class="modal result-modal" aria-hidden="true">
+        <div id="battleResultContent" class="result-modal-content" role="dialog" aria-modal="true" aria-labelledby="battleResultTitle">
+            <h2 id="battleResultTitle"></h2>
+            <p id="battleResultMessage"></p>
+            <button class="result-close-btn" type="button" onclick="closeBattleResult()">ปิดผลการต่อสู้</button>
+        </div>
+    </div>
+
+    <!-- ================= BATTLE ARENA MODAL ================= -->
+    <div id="battleModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeBattleModal()">&times;</span>
+
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+                <h2>⚔️ Battle Arena (Fixed Damage Mode)</h2>
+                <button id="autoBtn" class="auto-btn" type="button" onclick="toggleAutoBattle()">⚡ ต่อสู้ออโต้: OFF</button>
+            </div>
+
+            <div class="battle-teams">
+                <!-- Player Team -->
+                <div class="team-column" id="playerTeamColumn"></div>
+
+                <!-- VS Badge -->
+                <div class="battle-vs" style="text-align: center; font-size: 28px; font-weight: bold; color: #f43f5e;">VS</div>
+
+                <!-- Enemy Team -->
+                <div class="team-column" id="enemyTeamColumn"></div>
+            </div>
+
+            <!-- Action Controls -->
+            <div class="action-panel">
+                <button id="basicAtkBtn" class="atk-btn" onclick="userSelectAction('basic')">⚔️ โจมตีปกติ (Fixed Atk)</button>
+                <button id="specialAtkBtn" class="spec-btn" onclick="userSelectAction('special')" disabled>💥 สกิลพิเศษ (Atk x 1.8)</button>
+                <button id="defendBtn" class="defend-btn" onclick="userSelectAction('defend')">🛡️ ป้องกัน</button>
+            </div>
+            <p id="actionPrompt" class="action-prompt" aria-live="polite">เลือกคำสั่งเพื่อเล่นเทิร์นของคุณ</p>
+
+            <!-- Battle Log -->
+            <div id="battleLog" class="battle-log"></div>
+        </div>
+    </div>
+
+    <!-- ดึงไฟล์ main.js มาทำงาน -->
+    <script src="main.js"></script>
+</body>
+
+</html>
