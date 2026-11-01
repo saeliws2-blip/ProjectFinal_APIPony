@@ -16,6 +16,7 @@ export default function Nav() {
   const here = isCharacterDetail ? "characters" : isHowToPlay ? "howToPlay" : routeHere;
 
   const pageInfo = {
+    howToPlay: { icon: "📖", title: "วิธีเล่น" },
     characters: { icon: "🦄", title: "ตัวละคร" },
     team: { icon: "⭐", title: "ทีมของฉัน" },
     battle: { icon: "⚔️", title: "ต่อสู้" }
@@ -26,11 +27,6 @@ export default function Nav() {
 
   return (
     <nav className="nav" aria-label="เลือกหน้า">
-      {isHowToPlay ? (
-        <span className="tab on" aria-current="page">📖 วิธีเล่น</span>
-      ) : (
-        <Link to="/how-to-play" className="tab">📖 วิธีเล่น</Link>
-      )}
       {Object.keys(pagePaths).map((id) => {
         const n = pageInfo[id];
 

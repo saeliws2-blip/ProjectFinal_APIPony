@@ -1,14 +1,16 @@
 // Graph (adjacency list) — node = หน้าเว็บ, edge = ลิงก์/เมนูที่พาไปหน้าอื่น
 
 export const pageGraph = {
-  characters: ["team", "battle", "characterDetail"],
-  team: ["characters", "battle"],
-  battle: ["characters", "team"],
-  characterDetail: ["characters", "team", "battle"]
+  howToPlay: ["characters", "team", "battle"],
+  characters: ["team", "battle", "characterDetail", "howToPlay"],
+  team: ["characters", "battle", "howToPlay"],
+  battle: ["characters", "team", "howToPlay"],
+  characterDetail: ["characters", "team", "battle", "howToPlay"]
 };
 
 // เส้นทางของแต่ละหน้า
 export const pagePaths = {
+  howToPlay: "/how-to-play",
   characters: "/",
   team: "/team",
   battle: "/battle"
