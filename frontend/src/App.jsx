@@ -1,10 +1,11 @@
 import { Routes, Route } from "react-router-dom";
 import { pagePaths, routePaths } from "./Graph";
 import Nav from "./components/Nav";
-import CharactersPage from "./pages/CharactersPage";
-import CharacterDetailPage from "./pages/CharacterDetailPage";
+import CharactersPage from "./pages/CharactersPagePony";
+import CharacterDetailPage from "./pages/CharacterDetailPagePony";
 import TeamPage from "./pages/TeamPage";
-import BattlePage from "./pages/BattlePage";
+import BattlePage from "./pages/BattlePagePony";
+import HowToPlayPagePony from "./pages/HowToPlayPagePony";
 
 const PAGE_COMPONENTS = {
   characters: CharactersPage,
@@ -22,6 +23,7 @@ function App() {
       <div className="wrap">
         <Nav />
         <Routes>
+          <Route path="/how-to-play" element={<HowToPlayPagePony />} />
           <Route path={pagePaths.characters} element={<CharactersPage />} />
           <Route path={pagePaths.team} element={<TeamPage />} />
           <Route path={pagePaths.battle} element={<BattlePage />} />

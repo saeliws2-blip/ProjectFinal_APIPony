@@ -1,0 +1,731 @@
+:root {
+  --bg: #fff7fb;
+  --card: #fffefe;
+  --tx: #49364f;
+  --mute: #8d7794;
+  --pr: #bd70b6;
+  --ln: #f0d7eb;
+  --s1: #a4a4b7;
+  --s2: #78ba9c;
+  --s3: #77a9dc;
+  --s4: #b985d2;
+  --s5: #e8ba5b;
+}
+
+body {
+  background:
+    radial-gradient(ellipse at 10% 0%, #fce4f1 0, transparent 38rem),
+    radial-gradient(ellipse at 92% 18%, #e8f4ff 0, transparent 34rem),
+    var(--bg);
+}
+
+input:focus,
+select:focus,
+input:focus-visible,
+select:focus-visible {
+  border-color: #bf67b5;
+  outline: 3px solid #e8b3df;
+  outline-offset: 1px;
+  box-shadow: 0 0 0 4px #f7e4f3;
+}
+
+button,
+.button-link,
+input,
+select,
+.panel,
+.card {
+  border-radius: 16px;
+}
+
+button,
+.button-link {
+  background: linear-gradient(135deg, #d884bf, #9b83d4);
+  box-shadow: 0 4px 12px #9a6ba522;
+}
+
+.nav .tab.on {
+  background: linear-gradient(135deg, #d884bf, #9b83d4);
+  border-color: #bd70b6;
+}
+
+.pony-play-guide {
+  position: relative;
+  overflow: hidden;
+  margin: 0 0 18px;
+  padding: clamp(16px, 3vw, 26px);
+  border: 1px solid #ecd5ef;
+  border-radius: 24px;
+  background:
+    radial-gradient(circle at 95% 0%, #fff 0 3px, transparent 4px),
+    radial-gradient(circle at 90% 12%, #fff 0 2px, transparent 3px),
+    linear-gradient(130deg, #fff5fb, #f1f5ff 58%, #fff9e9);
+  box-shadow: 0 10px 28px #8e57931c;
+}
+
+.pony-guide-heading {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+  margin-bottom: 16px;
+}
+
+.pony-guide-badge {
+  display: grid;
+  flex: 0 0 46px;
+  width: 46px;
+  height: 46px;
+  place-items: center;
+  border: 1px solid #fff;
+  border-radius: 16px;
+  background: linear-gradient(145deg, #f6d5ef, #e1dcff);
+  color: #9666b1;
+  font-size: 24px;
+  box-shadow: 0 4px 12px #9a6ba522;
+}
+
+.pony-guide-eyebrow {
+  margin: 0;
+  color: #a16ca9;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+}
+
+.pony-guide-heading h2 {
+  margin: 1px 0;
+  color: #60476c;
+  font-size: clamp(19px, 3vw, 24px);
+}
+
+.pony-guide-heading > div > p:last-child {
+  margin: 0;
+  color: #8d7794;
+  font-size: 13px;
+}
+
+.pony-guide-steps {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.pony-guide-step {
+  position: relative;
+  min-width: 0;
+  padding: 14px;
+  border: 1px solid #f0dfef;
+  border-radius: 18px;
+  background: #ffffffc9;
+  box-shadow: 0 4px 14px #9a6ba510;
+}
+
+.pony-guide-number {
+  position: absolute;
+  top: 10px;
+  right: 12px;
+  color: #bb9ac5;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+}
+
+.pony-guide-art {
+  display: grid;
+  height: 95px;
+  margin-bottom: 8px;
+  place-items: center;
+  border-radius: 14px;
+  background: linear-gradient(135deg, #fff2f9, #eff4ff);
+}
+
+.pony-guide-art-team {
+  background: linear-gradient(135deg, #f0f9ff, #f9f0ff);
+}
+
+.pony-guide-art-battle {
+  background: linear-gradient(135deg, #fff4e6, #f5edff);
+}
+
+.pony-guide-art svg {
+  width: min(100%, 180px);
+  height: 95px;
+}
+
+.pony-guide-step h3 {
+  margin: 4px 0;
+  color: #674d73;
+  font-size: 15px;
+}
+
+.pony-guide-step p {
+  margin: 0;
+  color: #887a8e;
+  font-size: 12px;
+  line-height: 1.65;
+}
+
+.pony-guide-links {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 16px;
+}
+
+.pony-guide-battle-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 9px 14px;
+  border: 1px solid #e8d4ed;
+  border-radius: 16px;
+  background: #fff;
+  color: #795987;
+  font-weight: 650;
+  text-decoration: none;
+}
+
+.pony-controls {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: minmax(220px, 1fr) minmax(145px, 0.55fr) minmax(220px, 0.85fr) auto;
+  align-items: end;
+  gap: 12px;
+  margin: 0 0 16px;
+  padding: 18px;
+  border: 1px solid #efd5e8;
+  border-radius: 22px;
+  background: #fffdfbeF;
+  box-shadow: 0 8px 26px #8e57931c;
+}
+
+.pony-controls label {
+  display: grid;
+  gap: 6px;
+  color: #806488;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.pony-controls input,
+.pony-controls select {
+  width: 100%;
+  min-width: 0;
+  border-radius: 14px;
+  background-color: #fff;
+}
+
+.pony-story-tabs {
+  display: flex;
+  gap: 8px;
+  margin: 12px 0 16px;
+  padding: 5px;
+  border-radius: 16px;
+  background: #faedf7;
+}
+
+.pony-story-tabs button {
+  flex: 1;
+  min-height: 42px;
+  border: 1px solid transparent;
+  background: transparent;
+  box-shadow: none;
+  color: #76577d;
+}
+
+.pony-story-tabs button.is-active {
+  border-color: #edc9e6;
+  background: #fff;
+  color: #8c4f94;
+  box-shadow: 0 3px 10px #9a6ba51c;
+}
+
+.pony-story-panel {
+  min-height: 180px;
+  padding: 14px;
+  border: 1px solid #f1dfed;
+  border-radius: 18px;
+  background: linear-gradient(145deg, #fff, #fff8fc);
+  box-shadow: inset 0 1px #fff, 0 8px 22px #a4669710;
+}
+
+.pony-scroll-top {
+  position: sticky;
+  bottom: 12px;
+  z-index: 5;
+  display: grid;
+  width: 48px;
+  height: 48px;
+  margin: -58px 0 10px auto;
+  padding: 0;
+  place-items: center;
+  border: 2px solid #fff;
+  border-radius: 50%;
+  background: linear-gradient(145deg, #ed9dcc, #a58be0);
+  color: #fff;
+  font-size: 27px;
+  font-weight: 800;
+  line-height: 1;
+  box-shadow: 0 5px 16px #855aa466;
+  transition: transform 160ms ease, box-shadow 160ms ease;
+}
+
+.pony-scroll-top:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px #855aa477;
+}
+
+.pony-page-scroll-top {
+  position: fixed;
+  right: max(22px, env(safe-area-inset-right));
+  bottom: max(22px, env(safe-area-inset-bottom));
+  margin: 0;
+  cursor: pointer;
+}
+
+.pony-profile-actions .button-link {
+  box-shadow: 0 4px 12px #9a6ba522;
+}
+
+.box:has(.pony-battle-result.is-lose) {
+  border-color: #e85f73;
+  background: linear-gradient(155deg, #fff, #fff0f1);
+  box-shadow: 0 0 0 4px #e85f7322, 0 14px 42px #c9425833;
+}
+
+.box:has(.pony-battle-result.is-lose) h2 {
+  color: #c52e49;
+}
+
+.box:has(.pony-battle-result.is-win) {
+  border-color: #e8ba5b;
+  box-shadow: 0 0 0 4px #f4d88044, 0 14px 42px #8058c533;
+}
+
+.pony-battle-result {
+  position: relative;
+  margin: 14px 0;
+}
+
+.pony-battle-result-caption {
+  margin: 8px 0 12px;
+  color: #795987;
+  font-weight: 750;
+}
+
+.pony-winning-team {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+  margin: 12px 0 4px;
+}
+
+.pony-winning-member {
+  position: relative;
+  min-width: 0;
+  padding: 8px 6px;
+  border: 1px solid #ecd8ef;
+  border-radius: 16px;
+  background: linear-gradient(145deg, #fff, #f8f2ff);
+  box-shadow: 0 5px 14px #885b9630;
+  animation: pony-winner-pop 450ms cubic-bezier(.2, .8, .2, 1) both;
+}
+
+.pony-winning-member:nth-child(2) {
+  animation-delay: 100ms;
+}
+
+.pony-winning-member:nth-child(3) {
+  animation-delay: 200ms;
+}
+
+.pony-winning-member .img {
+  height: 74px;
+  font-size: 38px;
+}
+
+.pony-winning-member .img img {
+  max-height: 74px;
+}
+
+.pony-winning-member strong {
+  display: block;
+  overflow: hidden;
+  color: #60476c;
+  font-size: 12px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.pony-winning-number {
+  position: absolute;
+  top: 5px;
+  left: 7px;
+  display: grid;
+  width: 21px;
+  height: 21px;
+  place-items: center;
+  border-radius: 50%;
+  background: #e9dcf5;
+  color: #795987;
+  font-size: 11px;
+  font-weight: 800;
+}
+
+.pony-battle-loss-note {
+  margin: 12px 0;
+  padding: 12px;
+  border: 1px solid #f2b9c1;
+  border-radius: 14px;
+  background: #fff;
+  color: #bd344b;
+  font-weight: 700;
+}
+
+.pony-confetti-layer {
+  position: fixed;
+  z-index: 100;
+  overflow: hidden;
+  inset: 0;
+  pointer-events: none;
+}
+
+.pony-confetti-layer span {
+  position: absolute;
+  top: -24px;
+  border-radius: 2px;
+  opacity: 0.9;
+  animation-name: pony-confetti-fall;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+}
+
+@keyframes pony-winner-pop {
+  from {
+    opacity: 0;
+    transform: translateY(12px) scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes pony-confetti-fall {
+  0% {
+    transform: translate3d(0, -5vh, 0) rotate(0deg);
+  }
+  100% {
+    transform: translate3d(var(--pony-confetti-drift), 110vh, 0) rotate(760deg);
+  }
+}
+
+.pony-profile-heading {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 12px;
+}
+
+.pony-profile-heading .img {
+  flex: 0 0 126px;
+  height: 126px;
+}
+
+.pony-profile-heading h3,
+.pony-stats h4 {
+  margin: 0 0 6px;
+}
+
+.pony-stats {
+  margin-top: 16px;
+  padding: 12px;
+  border-radius: 14px;
+  background: #fff5db;
+}
+
+.pony-appearances {
+  margin-top: 18px;
+  padding: 14px;
+  border: 1px solid #efe0ef;
+  border-radius: 18px;
+  background: linear-gradient(145deg, #fff, #fbf8ff);
+}
+
+.pony-appearance-heading {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.pony-appearance-heading > span {
+  display: grid;
+  flex: 0 0 38px;
+  width: 38px;
+  height: 38px;
+  place-items: center;
+  border-radius: 13px;
+  background: #f8eafa;
+  font-size: 19px;
+}
+
+.pony-appearance-heading h4 {
+  margin: 0;
+  color: #755381;
+}
+
+.pony-appearance-heading p {
+  margin: 1px 0 0;
+  color: #917a98;
+  font-size: 12px;
+}
+
+.pony-appearance-counts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 12px 0;
+}
+
+.pony-appearance-counts span {
+  padding: 5px 10px;
+  border: 1px solid #f0dfef;
+  border-radius: 999px;
+  background: #fff8fd;
+  color: #80558f;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.pony-season-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.pony-season-chip {
+  display: inline-flex;
+  margin: 0;
+  padding: 6px 12px;
+  border: 1px solid #e8d1f0;
+  border-radius: 999px;
+  background: linear-gradient(135deg, #f9eafb, #edf4ff);
+  color: #765489;
+  font-size: 12px;
+  font-weight: 700;
+  box-shadow: 0 3px 8px #9c67aa12;
+}
+
+.pony-season-episodes {
+  margin-top: 12px;
+  padding: 12px;
+  border: 1px solid #f0dfef;
+  border-radius: 15px;
+  background: linear-gradient(135deg, #fffafd, #f8f6ff);
+}
+
+.pony-season-episodes h5.pony-season-chip {
+  margin: 0 0 5px;
+}
+
+.pony-episode-list {
+  display: grid;
+  gap: 0;
+  max-height: 260px;
+  overflow: auto;
+  margin: 0;
+  padding: 2px 0 2px 4px;
+  list-style: none;
+}
+
+.pony-episode-list li {
+  position: relative;
+  display: grid;
+  grid-template-columns: 24px minmax(0, 1fr);
+  gap: 8px;
+  padding: 8px 0;
+  color: #604d68;
+}
+
+.pony-episode-list li:not(:last-child)::after {
+  position: absolute;
+  top: 28px;
+  bottom: -8px;
+  left: 11px;
+  border-left: 1px dashed #d9bce1;
+  content: "";
+}
+
+.pony-episode-marker {
+  z-index: 1;
+  display: grid;
+  width: 23px;
+  height: 23px;
+  place-items: center;
+  border: 1px solid #ead3ef;
+  border-radius: 50%;
+  background: #fff;
+  color: #b26ab7;
+  font-size: 11px;
+}
+
+.pony-episode-list li b {
+  display: inline-block;
+  min-width: 62px;
+  margin: 0 5px 3px 0;
+  padding: 2px 7px;
+  border-radius: 7px;
+  background: #f5eafa;
+  color: #845693;
+  font-size: 11px;
+  text-align: center;
+}
+
+.pony-episode-name {
+  font-size: 13px;
+}
+
+.pony-no-episodes {
+  margin: 8px 0 0;
+  color: #917a98;
+  font-size: 12px;
+}
+
+.pony-wiki-link {
+  margin: 16px 0 0;
+  padding-top: 12px;
+  border-top: 1px solid #f0dfef;
+  text-align: center;
+}
+
+.pony-wiki-link a {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 14px;
+  border: 1px solid #e8d4ed;
+  border-radius: 999px;
+  background: linear-gradient(135deg, #fff8fd, #f3f1ff);
+  color: #80558f;
+  font-size: 13px;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.pony-wiki-link a:hover {
+  border-color: #d7b5e3;
+  background: #f9edfb;
+}
+
+.pony-profile-actions {
+  justify-content: center;
+  margin-bottom: 0;
+}
+
+.pony-modal {
+  border-radius: 24px;
+}
+
+.pony-modal .modal-sticky-header {
+  border-radius: 22px 22px 0 0;
+}
+
+.pony-character-detail .pony-profile-heading .img {
+  flex-basis: 160px;
+  height: 160px;
+}
+
+@media (max-width: 760px) {
+  .pony-guide-steps {
+    grid-template-columns: 1fr;
+  }
+
+  .pony-guide-step {
+    display: grid;
+    grid-template-columns: 98px minmax(0, 1fr);
+    grid-template-rows: auto auto;
+    align-items: center;
+    column-gap: 12px;
+  }
+
+  .pony-guide-number {
+    top: 8px;
+    right: 10px;
+  }
+
+  .pony-guide-art {
+    grid-row: 1 / 3;
+    height: 78px;
+    margin: 0;
+  }
+
+  .pony-guide-art svg {
+    height: 78px;
+  }
+
+  .pony-guide-step h3 {
+    align-self: end;
+    margin: 0 18px 2px 0;
+  }
+
+  .pony-guide-step p {
+    align-self: start;
+  }
+
+  .pony-controls {
+    grid-template-columns: 1fr 1fr;
+    padding: 14px;
+  }
+
+  .pony-search {
+    grid-column: 1 / -1;
+  }
+
+  .pony-controls .clear-search {
+    grid-column: 1 / -1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pony-winning-member,
+  .pony-confetti-layer span {
+    animation: none;
+  }
+}
+
+@media (max-width: 440px) {
+  .pony-controls {
+    grid-template-columns: 1fr;
+  }
+
+  .pony-search,
+  .pony-controls .clear-search {
+    grid-column: auto;
+  }
+
+  .pony-profile-heading {
+    align-items: flex-start;
+  }
+
+  .pony-profile-heading .img {
+    flex-basis: 92px;
+    height: 92px;
+  }
+
+  .pony-guide-heading {
+    align-items: flex-start;
+  }
+
+  .pony-guide-badge {
+    flex-basis: 38px;
+    width: 38px;
+    height: 38px;
+    border-radius: 13px;
+  }
+
+  .pony-guide-links {
+    flex-wrap: wrap;
+  }
+}

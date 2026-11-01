@@ -2,7 +2,6 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { useGame } from "../context/GameContext";
 import UnitCard from "../components/UnitCard";
 import { autoTurn, chooseAction, createBattle, enemyTurn, pickTarget, roleLabel, teamCombo, toggleAuto } from "../game/battle";
-import { createBattleMusic } from "../game/battleMusic";
 import DataState from "../components/DataState";
 
 export default function BattlePage() {
@@ -11,11 +10,8 @@ export default function BattlePage() {
   const [closed, setClosed] = useState(false); // ปิดหน้าต่างสรุปผล
   const [showLog, setShowLog] = useState(false);
   const [resultReady, setResultReady] = useState(false);
-  const [musicEnabled, setMusicEnabled] = useState(true);
-  const [musicNotice, setMusicNotice] = useState("");
   const [visibleFx, setVisibleFx] = useState(null);
   const logRef = useRef(null);
-  const musicRef = useRef(null);
   const ready = team.length === 3;
 
   useEffect(() => { if (ready && chars.length) ensureEnemies(); }, [ready, chars.length]); // eslint-disable-line
@@ -48,33 +44,6 @@ export default function BattlePage() {
     const timer = window.setTimeout(() => setResultReady(true), 1100);
     return () => window.clearTimeout(timer);
   }, [B?.over]);
-  useEffect(() => {
-    if (B?.over) stopBattleMusic();
-  }, [B?.over]);
-  useEffect(() => () => stopBattleMusic(), []);
-
-  function stopBattleMusic() {
-    if (!musicRef.current) return;
-    musicRef.current.stop();
-    musicRef.current = null;
-  }
-  function startBattleMusic() {
-    stopBattleMusic();
-    if (!musicEnabled) return;
-    try {
-      const music = createBattleMusic();
-      if (!music) {
-        setMusicNotice("เบราว์เซอร์นี้ไม่รองรับเสียงดนตรี");
-        return;
-      }
-      musicRef.current = music;
-      setMusicNotice("");
-    } catch (error) {
-      console.error("เปิดดนตรีต่อสู้ไม่สำเร็จ:", error);
-      setMusicNotice("เปิดเสียงไม่ได้ — ตรวจสอบการตั้งค่าเสียงของเบราว์เซอร์");
-    }
-  }
-
   if (loading || error || !chars.length) {
     return <DataState loading={loading} error={error} onRetry={retryCharacters}
       empty={!loading && !error && !chars.length} emptyMessage="ยังเริ่มต่อสู้ไม่ได้ เพราะไม่มีข้อมูลตัวละคร" />;
@@ -82,26 +51,8 @@ export default function BattlePage() {
   if (!ready) return <p className="panel">ต้องเลือกทีมให้ครบ 3 ตัวก่อน (เลือกแท็บ “ตัวละคร” เพื่อเพิ่มตัวละคร)</p>;
   if (!S) return <p>กำลังเตรียมศัตรู...</p>;
 
-  const start = () => { setClosed(false); setResultReady(false); setB(createBattle(team.map(byId), enemyIds.map(byId))); startBattleMusic(); };
-  const reroll = () => { stopBattleMusic(); setB(null); ensureEnemies(true); };
-  const toggleMusicEnabled = () => {
-    if (musicEnabled) {
-      stopBattleMusic();
-      setMusicEnabled(false);
-    } else {
-      setMusicEnabled(true);
-      if (B && !B.over) {
-        try {
-          const music = createBattleMusic();
-          if (!music) setMusicNotice("เบราว์เซอร์นี้ไม่รองรับเสียงดนตรี");
-          else { musicRef.current = music; setMusicNotice(""); }
-        } catch (error) {
-          console.error("เปิดดนตรีต่อสู้ไม่สำเร็จ:", error);
-          setMusicNotice("เปิดเสียงไม่ได้ — ตรวจสอบการตั้งค่าเสียงของเบราว์เซอร์");
-        }
-      }
-    }
-  };
+  const start = () => { setClosed(false); setResultReady(false); setB(createBattle(team.map(byId), enemyIds.map(byId))); };
+  const reroll = () => { setB(null); ensureEnemies(true); };
   const a = B && B.T[B.idx];
   const myTurn = B && !B.over && B.turn === "player" && !B.auto;
   const comboReady = myTurn && a.energy >= 100 && B.T.filter((unit) => unit.hp > 0).length >= 2;
@@ -139,11 +90,7 @@ export default function BattlePage() {
         <div className="row center scene-actions">
           <button className="ghost" onClick={reroll}>🎲 สุ่มศัตรูใหม่</button>
           <button onClick={start}>{B ? "เริ่มใหม่" : "เริ่มต่อสู้"}</button>
-          <button className="ghost music-toggle" onClick={toggleMusicEnabled} aria-pressed={musicEnabled} disabled={!B || B.over}>
-            {musicEnabled ? "🔊 ปิดดนตรี" : "🔇 เปิดดนตรี"}
-          </button>
         </div>
-        {musicNotice && <p className="music-notice" role="status">{musicNotice}</p>}
       </div>
 
       <div id="cmd">

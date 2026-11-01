@@ -9,10 +9,11 @@ export default function Nav() {
   const { team } = useGame();
 
   const isCharacterDetail = /^\/characters\/[^/]+\/?$/.test(pathname);
-  const routeHere = isCharacterDetail ? "characterDetail" : Object.keys(pagePaths).find(
+  const isHowToPlay = pathname === "/how-to-play";
+  const routeHere = isCharacterDetail ? "characterDetail" : isHowToPlay ? "characters" : Object.keys(pagePaths).find(
     (id) => pagePaths[id] === pathname
   ) || "characters";
-  const here = isCharacterDetail ? "characters" : routeHere;
+  const here = isCharacterDetail ? "characters" : isHowToPlay ? "howToPlay" : routeHere;
 
   const pageInfo = {
     characters: { icon: "🦄", title: "ตัวละคร" },
@@ -21,10 +22,15 @@ export default function Nav() {
   };
 
   const guards = { fullTeam: team.length === 3 };
-  const out = pageGraph[routeHere] ?? [];
+  const out = isHowToPlay ? Object.keys(pagePaths) : pageGraph[routeHere] ?? [];
 
   return (
     <nav className="nav" aria-label="เลือกหน้า">
+      {isHowToPlay ? (
+        <span className="tab on" aria-current="page">📖 วิธีเล่น</span>
+      ) : (
+        <Link to="/how-to-play" className="tab">📖 วิธีเล่น</Link>
+      )}
       {Object.keys(pagePaths).map((id) => {
         const n = pageInfo[id];
 

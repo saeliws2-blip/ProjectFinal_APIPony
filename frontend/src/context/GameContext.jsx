@@ -9,11 +9,17 @@ const ls = {
   set(k, v) { try { localStorage.setItem("pony_" + k, JSON.stringify(v)); } catch { /* ignore */ } },
 };
 
+function getSavedTeam() {
+  const saved = ls.get("team", []);
+  if (!Array.isArray(saved)) return [];
+  return [...new Set(saved.map(Number).filter((id) => Number.isInteger(id) && id > 0))].slice(0, 3);
+}
+
 export function GameProvider({ children }) {
   const [all, setAll] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
-  const [team, setTeam] = useState([]);
+  const [team, setTeam] = useState(getSavedTeam);
   const [enemyIds, setEnemyIds] = useState(() => ls.get("enemies", []));
   const requestId = useRef(0);
 
@@ -51,6 +57,12 @@ export function GameProvider({ children }) {
   }, []);
 
   useEffect(() => { void loadCharacters(); }, [loadCharacters]);
+  useEffect(() => { ls.set("team", team); }, [team]);
+  useEffect(() => {
+    if (all.length) {
+      setTeam((current) => current.filter((id) => all.some((character) => character.id === id)));
+    }
+  }, [all]);
 
   const chars = all;
   const byId = useCallback((id) => all.find((c) => c.id === id), [all]);

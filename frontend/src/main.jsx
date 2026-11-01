@@ -4,6 +4,7 @@ import { HashRouter } from "react-router-dom"; // HashRouter: รีเฟรช
 import App from "./App";
 import { GameProvider } from "./context/GameContext";
 import "./styles.css";
+import "./pony-theme.css";
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
