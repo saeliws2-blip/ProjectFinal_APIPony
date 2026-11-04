@@ -4,6 +4,9 @@ import { makeStats, rate } from "../game/rarity";
 const Ctx = createContext(null);
 export const useGame = () => useContext(Ctx);
 
+// URL ของ Render (ส่วน backend)
+const API_BASE_URL = "https://projectpony-backend.onrender.com";
+
 const ls = {
   get(k, d) { try { return JSON.parse(localStorage.getItem("pony_" + k)) ?? d; } catch { return d; } },
   set(k, v) { try { localStorage.setItem("pony_" + k, JSON.stringify(v)); } catch { /* ignore */ } },
@@ -28,9 +31,14 @@ export function GameProvider({ children }) {
     setLoading(true);
     setError("");
     try {
-      const response = await fetch(retry ? "/characters/reload" : "/characters", {
-        method: retry ? "POST" : "GET",
-      });
+      const response = await fetch(
+        retry
+          ? `${API_BASE_URL}/characters/reload`
+          : `${API_BASE_URL}/characters`,
+        {
+          method: retry ? "POST" : "GET",
+        }
+      );
       const result = await response.json();
       if (!response.ok) {
         throw new Error(result.error || `โหลดข้อมูลไม่สำเร็จ (${response.status})`);
