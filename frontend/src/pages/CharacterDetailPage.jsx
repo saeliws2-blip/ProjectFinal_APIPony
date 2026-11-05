@@ -4,7 +4,7 @@ import Portrait from "../components/Portrait";
 import DataState from "../components/DataState";
 import { pagePaths } from "../Graph";
 
-const API_BASE_URL = " https://projectlpony-backend.onrender.com";
+const API_BASE_URL = "https://projectlpony-backend.onrender.com";
 const asLines = (value) => {
   if (Array.isArray(value)) return value.filter(Boolean);
   return typeof value === "string" ? value.split(/\r?\n/).filter(Boolean) : [];

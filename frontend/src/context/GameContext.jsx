@@ -46,9 +46,13 @@ export function GameProvider({ children }) {
 
       const cache = ls.get("rarity", {}); // บันทึกระดับดาวไว้ ไม่เปลี่ยนทุกครั้งที่โหลด
       const list = result.data.map((c) => {
-        const rt = cache[c.id] || rate(c);
+        const character = {
+          ...c,
+          name: c.name.replace(/^"(.*)"$/, "$1"),
+        };
+        const rt = cache[c.id] || rate(character);
         cache[c.id] = rt;
-        const x = { ...c, rate: rt, star: rt.star };
+        const x = { ...character, rate: rt, star: rt.star };
         return { ...x, st: makeStats(x) };
       });
       ls.set("rarity", cache);
