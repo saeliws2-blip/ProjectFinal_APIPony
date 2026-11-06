@@ -56,17 +56,17 @@ export default function CharacterProfile({ character }) {
           <StatBars st={character.st} />
         </div>
       )}
-      <section className="pony-appearances" aria-label="ซีซันและตอนที่ตัวละครปรากฏ">
+      <section className="pony-appearances" aria-label="ตัวอย่างซีซันและตอนที่ตัวละครปรากฏ">
         <div className="pony-appearance-heading">
           <span aria-hidden="true">✨</span>
           <div>
-            <h4>การปรากฏตัว</h4>
-            <p>ซีซันและตอนที่ {character.name} ร่วมผจญภัย</p>
+            <h4>ตัวอย่างตอนที่ปรากฏ (Example Episodes)</h4>
+            <p>ตัวอย่างซีซันและตอนที่ {character.name} ร่วมผจญภัย</p>
           </div>
         </div>
         <div className="pony-appearance-counts">
-          <span>🌙 {seasons.length} ซีซัน</span>
-          <span>📺 {character.episodeCount ?? episodes.length} ตอน</span>
+          <span>🌙 {seasons.length} ซีซันที่มีข้อมูล</span>
+          <span>📺 {episodeDetails.length} ตัวอย่างตอน</span>
         </div>
         {seasons.length > 0 ? seasons.map((season) => {
           const seasonEpisodes = episodesBySeason.get(season) || [];
@@ -74,23 +74,23 @@ export default function CharacterProfile({ character }) {
             <section className="pony-season-episodes" key={season} aria-label={`Season ${season}`}>
               <h5 className="pony-season-chip">✦ Season {season}</h5>
               {seasonEpisodes.length > 0 ? (
-                <ul className="pony-episode-list" aria-label={`ตอนที่ปรากฏใน Season ${season}`}>
+                <ul className="pony-episode-list" aria-label={`ตัวอย่างตอนที่ปรากฏใน Season ${season}`}>
                   {seasonEpisodes.map((episode, index) => (
                     <li key={`${episode.code || `S${season}E${episode.number || index}`}-${index}`}>
                       <span className="pony-episode-marker" aria-hidden="true">✦</span>
                       <div>
-                        <b>{episode.number ? `ปรากฏตอนที่ ${episode.number}` : episode.code || "ตอนที่ไม่ระบุ"}</b>
+                        <b>{episode.number ? `ตัวอย่างตอนที่ ${episode.number}` : episode.code || "ตอนตัวอย่างที่ไม่ระบุ"}</b>
                       </div>
                     </li>
                   ))}
                 </ul>
               ) : (
-                <p className="pony-no-episodes">ไม่มีข้อมูลตอนของซีซันนี้</p>
+                <p className="pony-no-episodes">ไม่มีข้อมูลตัวอย่างตอนของซีซันนี้</p>
               )}
             </section>
           );
         }) : (
-          <p className="pony-no-episodes">ไม่มีข้อมูลซีซันที่ปรากฏ</p>
+          <p className="pony-no-episodes">ไม่มีข้อมูลตัวอย่างซีซันที่ปรากฏ</p>
         )}
       </section>
       {character.url && (
