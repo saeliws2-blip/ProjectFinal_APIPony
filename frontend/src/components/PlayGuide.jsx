@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import { pagePaths } from "../Graph";
 
 function Mascot({ x, color }) {
   return (
@@ -96,7 +97,7 @@ export default function PlayGuide() {
         ))}
       </div>
       <div className="pony-guide-links">
-        <Link className="button-link" to="/">ไปเลือกตัวละคร 🦄</Link>
+        <Link className="button-link" to={pagePaths.characters}>ไปเลือกตัวละคร 🦄</Link>
       </div>
     </section>
   );

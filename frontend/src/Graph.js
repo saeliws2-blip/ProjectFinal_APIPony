@@ -10,8 +10,8 @@ export const pageGraph = {
 
 // เส้นทางของแต่ละหน้า
 export const pagePaths = {
-  howToPlay: "/how-to-play",
-  characters: "/",
+  howToPlay: "/",
+  characters: "/characters",
   team: "/team",
   battle: "/battle"
 };

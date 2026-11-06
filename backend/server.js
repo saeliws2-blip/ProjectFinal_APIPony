@@ -5,8 +5,19 @@ const cors = require("cors");
 const app = express();
 const PORT = process.env.PORT || 3000;
 
+const allowedOrigins = [
+    "https://projectfinal-api-pony.vercel.app",
+    "http://localhost:5173"
+];
+
 app.use(cors({
-    origin: "https://projectfinal-api-pony.vercel.app"
+    origin: function (origin, callback) {
+        if (!origin || allowedOrigins.includes(origin)) {
+            callback(null, true);
+        } else {
+            callback(new Error("Not allowed by CORS"));
+        }
+    }
 }));
 
 app.use(express.json());

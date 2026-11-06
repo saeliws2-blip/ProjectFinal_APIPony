@@ -23,6 +23,7 @@ function App() {
       <div className="wrap">
         <Nav />
         <Routes>
+          <Route path={pagePaths.howToPlay} element={<HowToPlayPagePony />} />
           <Route path="/how-to-play" element={<HowToPlayPagePony />} />
           <Route path={pagePaths.characters} element={<CharactersPage />} />
           <Route path={pagePaths.team} element={<TeamPage />} />

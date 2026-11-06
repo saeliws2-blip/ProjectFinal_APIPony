@@ -9,7 +9,7 @@ export default function Nav() {
   const { team } = useGame();
 
   const isCharacterDetail = /^\/characters\/[^/]+\/?$/.test(pathname);
-  const isHowToPlay = pathname === "/how-to-play";
+  const isHowToPlay = pathname === pagePaths.howToPlay || pathname === "/how-to-play";
   const routeHere = isCharacterDetail ? "characterDetail" : isHowToPlay ? "characters" : Object.keys(pagePaths).find(
     (id) => pagePaths[id] === pathname
   ) || "characters";
