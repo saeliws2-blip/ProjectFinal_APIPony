@@ -5,6 +5,12 @@ import DataState from "../components/DataState";
 import CharacterProfile from "../components/CharacterProfile";
 import { pagePaths } from "../Graph";
 
+const API_BASE_URL = "https://projectlpony-backend.onrender.com";
+const asLines = (value) => {
+  if (Array.isArray(value)) return value.filter(Boolean);
+  return typeof value === "string" ? value.split(/\r?\n/).filter(Boolean) : [];
+};
+
 export default function CharacterDetailPagePony() {
   const { id } = useParams();
   const { chars, loading, error, retryCharacters } = useGame();
