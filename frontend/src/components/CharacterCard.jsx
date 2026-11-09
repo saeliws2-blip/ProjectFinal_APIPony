@@ -1,7 +1,7 @@
 import Portrait from "./Portrait";
 import Stars from "./Stars";
 
-// สีการ์ดขึ้นกับระดับความแร์ (class r1..r5 ใน styles.css)
+
 export default function CharacterCard({ c, inTeam, full, onOpen, onToggle }) {
   return (
     <div className={`card r${c.star}`} data-id={c.id} tabIndex={0}
